@@ -16,12 +16,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-    // configure autherization
+    // configure autharization
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
-        return security.csrf().disable().authorizeRequests().antMatchers("/auth", "/sign-up")
-                .permitAll().anyRequest().authenticated().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();
+        return security.csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/auth", "/sign-up")
+                .permitAll()
+                .anyRequest()
+                .authenticated().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .build();
     }
 
     @Bean

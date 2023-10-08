@@ -2,7 +2,6 @@ package controllers;
 
 import dtos.SignupDTO;
 import dtos.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,12 @@ import services.user.UserService;
 @RequestMapping("/sign-up")
 @CrossOrigin("*")
 public class SignupController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+
+    public SignupController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody(required = true) SignupDTO signupRequest) {
