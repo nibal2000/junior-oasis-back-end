@@ -1,11 +1,11 @@
-package controllers;
+package com.example.junioroasisbackend.controllers;
 
-import dtos.SignupDTO;
-import dtos.UserDTO;
+import com.example.junioroasisbackend.services.user.UserService;
+import com.example.junioroasisbackend.dtos.SignupDTO;
+import com.example.junioroasisbackend.dtos.UserDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import services.user.UserService;
 
 @RestController
 @RequestMapping("/sign-up")

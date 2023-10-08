@@ -1,14 +1,12 @@
-package entities;
+package com.example.junioroasisbackend.entities;
 
 import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data

@@ -1,14 +1,15 @@
-package services.posts;
+package com.example.junioroasisbackend.services.posts;
 
-import dtos.PostDTO;
-import entities.Posts;
-import entities.User;
-import repositories.PostRepository;
-import repositories.UserRepository;
+import com.example.junioroasisbackend.repositories.PostRepository;
+import com.example.junioroasisbackend.repositories.UserRepository;
+import com.example.junioroasisbackend.dtos.PostDTO;
+import com.example.junioroasisbackend.entities.Posts;
+import com.example.junioroasisbackend.entities.User;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
-
+@Service
 public class PostServiceImpl implements PostService{
 
     private final UserRepository userRepository;

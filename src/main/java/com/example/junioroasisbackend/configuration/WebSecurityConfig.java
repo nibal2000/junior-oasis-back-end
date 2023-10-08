@@ -1,4 +1,4 @@
-package configuration;
+package com.example.junioroasisbackend.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ public class WebSecurityConfig {
         return security.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/auth", "/sign-up")
+                .antMatchers("/api/auth/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and().sessionManagement()

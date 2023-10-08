@@ -1,10 +1,10 @@
-package controllers;
+package com.example.junioroasisbackend.controllers;
 
-import dtos.PostDTO;
+import com.example.junioroasisbackend.services.posts.PostService;
+import com.example.junioroasisbackend.dtos.PostDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import services.posts.PostService;
 
 @RestController
 @CrossOrigin("*")

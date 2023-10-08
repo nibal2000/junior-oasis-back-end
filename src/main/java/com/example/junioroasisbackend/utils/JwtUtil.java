@@ -1,4 +1,4 @@
-package utils;
+package com.example.junioroasisbackend.utils;
 
 
 import org.springframework.beans.factory.annotation.Value;

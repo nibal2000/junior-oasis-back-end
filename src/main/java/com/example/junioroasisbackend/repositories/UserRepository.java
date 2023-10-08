@@ -1,6 +1,6 @@
-package repositories;
+package com.example.junioroasisbackend.repositories;
 
-import entities.User;
+import com.example.junioroasisbackend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

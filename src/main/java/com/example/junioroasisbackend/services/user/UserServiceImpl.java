@@ -1,18 +1,17 @@
-package services.user;
+package com.example.junioroasisbackend.services.user;
 
-import dtos.SignupDTO;
-import dtos.UserDTO;
-import entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.junioroasisbackend.dtos.SignupDTO;
+import com.example.junioroasisbackend.dtos.UserDTO;
+import com.example.junioroasisbackend.entities.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import repositories.UserRepository;
+import com.example.junioroasisbackend.repositories.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    @Autowired
+
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
