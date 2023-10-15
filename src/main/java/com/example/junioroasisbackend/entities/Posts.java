@@ -1,5 +1,6 @@
 package com.example.junioroasisbackend.entities;
 
+import com.example.junioroasisbackend.dtos.PostDTO;
 import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
@@ -24,6 +25,7 @@ public class Posts {
 
     private Date createdDate;
 
+    //@ElementCollection(targetClass = String.class)
     //private List<String> tags;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -31,5 +33,17 @@ public class Posts {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore // to exclude the User entity property from being serialized into JSON when the containing object is converted to JSON format.
     private User user;
+
+    //TODO Mapping instead
+    public PostDTO getPostDto() {
+    PostDTO postDTO = new PostDTO();
+    postDTO.setId(id); // get the id from entity, then set it to dto
+    postDTO.setBody(body);
+    postDTO.setTitle(title);
+    //postDTO.setTags(tags);
+    postDTO.setUserId(user.getId());
+    postDTO.setUserName(user.getName());
+    return postDTO;
+    }
 
 }

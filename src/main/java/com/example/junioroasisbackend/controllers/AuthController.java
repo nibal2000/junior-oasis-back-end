@@ -23,9 +23,7 @@ import com.example.junioroasisbackend.repositories.UserRepository;
 public class AuthController {
     // config jwt for local storage
 
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -33,27 +31,28 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping("login")
-    public ResponseEntity<Object> login(@RequestBody AuthRequestDTO authRequest)  {
+    public ResponseEntity<Object> login(@RequestBody AuthRequestDTO authRequest) {
         try {
-        Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authRequest.getEmail(), authRequest.getPassword()));
 
-        User user = userRepository.findFirstByEmail( ((UserDetails)authentication.getPrincipal()).getUsername()).get();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION , jwtUtil.generateToken(user.getEmail()))
-                .header("Access-Control-Expose-Headers" , HttpHeaders.AUTHORIZATION )
-                .body(
-                        new AuthResponseDTO(user)
-                );
-       } catch (BadCredentialsException e) {
-
-             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("email or password was wrong");
-
+            User user = userRepository.findFirstByEmail(((UserDetails) authentication.getPrincipal()).getUsername()).get();
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user.getEmail()))
+                    .header("Access-Control-Expose-Headers", HttpHeaders.AUTHORIZATION) // to fix displaying jwt in local storage in angular
+                    .body(
+                            new AuthResponseDTO(user)
+                    );
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("email or password was wrong");
         }
-
     }
 }

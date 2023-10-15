@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/sign-up")
+@RequestMapping(path = "/api/auth")
 @CrossOrigin("*")
 public class SignupController {
 
@@ -18,7 +18,7 @@ public class SignupController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("sign-up")
     public ResponseEntity<?> createUser(@RequestBody(required = true) SignupDTO signupRequest) {
 
         if (userService.hasUserWithEmail(signupRequest.getEmail())) {

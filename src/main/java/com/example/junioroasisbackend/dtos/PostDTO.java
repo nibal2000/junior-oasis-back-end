@@ -15,4 +15,6 @@ public class PostDTO {
 
     private Long userId;
 
+    private String userName; // which user posted this post
+
 }

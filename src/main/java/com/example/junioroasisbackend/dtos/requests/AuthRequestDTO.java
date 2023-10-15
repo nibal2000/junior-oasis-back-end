@@ -13,10 +13,9 @@ import javax.validation.constraints.NotNull;
 @ToString
 @AllArgsConstructor
 public class AuthRequestDTO {
-    @NotNull
+
     private String email;
 
     private String password;
-
 
 }
