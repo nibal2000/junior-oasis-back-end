@@ -13,26 +13,33 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig  implements WebMvcConfigurer {
+
 
     private final JwtRequestFilter jwtRequestFilter;
+
 
     public WebSecurityConfig(JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
-    // configure autharization
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
-        return security.csrf()
+
+        return security
+                .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .antMatchers("/api/auth/*")
                 .permitAll()
+                .and()
+                .cors()
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers("/api/**")
@@ -42,6 +49,7 @@ public class WebSecurityConfig {
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+
     }
 
     @Bean
@@ -54,4 +62,12 @@ public class WebSecurityConfig {
             throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").exposedHeaders("Authorization");
+
+    }
+
 }

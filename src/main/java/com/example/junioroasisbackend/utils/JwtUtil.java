@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +20,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
-    @Value("${jwt.token.expirationInMS}")
-    private Integer tokenExpirationInMS;
+    @Value("${jwt.token.expirationInDays}")
+    private Integer tokenExpirationInDays;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -51,7 +53,7 @@ public class JwtUtil {
 
         return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationInMS))
+                .setExpiration(Date.from(LocalDateTime.now().plusDays(tokenExpirationInDays).atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

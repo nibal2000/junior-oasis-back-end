@@ -1,13 +1,20 @@
 package com.example.junioroasisbackend.services.posts;
 
-import com.example.junioroasisbackend.dtos.PostDTO;
-import com.example.junioroasisbackend.dtos.requests.SinglePostDTO;
-import com.example.junioroasisbackend.dtos.responses.AllPostsResponseDto;
+import com.example.junioroasisbackend.dtos.requests.PostRequestDTO;
+import com.example.junioroasisbackend.dtos.responses.PostShowDTO;
+import com.example.junioroasisbackend.entities.Post;
+import com.example.junioroasisbackend.entities.User;
+import org.springframework.data.domain.Page;
 
 public interface PostService {
-    PostDTO addPost(PostDTO postDTO);
+    PostShowDTO addPost(PostRequestDTO postDTO) ;
 
-    AllPostsResponseDto getAllPosts(int pageNumber);
+    Page<PostShowDTO> getAllPosts(Integer pageNumber , Integer perPage , String sortBy);
 
-    SinglePostDTO getPostById(Long postId);
+    Post getPostById(Long postId) throws Exception;
+    void deletePostById(Long postId);
+
+    Post updatePost(Post post , PostRequestDTO postRequestDTO );
+
+    Post assignPostRequestedToPost(PostRequestDTO postRequestDTO , User user);
 }

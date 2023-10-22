@@ -10,13 +10,13 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-public class AuthResponseDTO {
+public class LoginResponseDTO {
 
     private String name;
 
     private String email;
 
-    public AuthResponseDTO(User user){
+    public LoginResponseDTO(User user){
         this.name = user.getName();
         this.email = user.getEmail();
     }

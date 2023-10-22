@@ -5,17 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-
-
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
-public class AuthRequestDTO {
+public class SignupRequestDTO {
+    private Long id;
+
+    private String name;
 
     private String email;
 
     private String password;
-
 }

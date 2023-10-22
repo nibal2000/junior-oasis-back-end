@@ -1,9 +1,9 @@
 package com.example.junioroasisbackend.controllers;
 
-import com.example.junioroasisbackend.dtos.responses.AuthResponseDTO;
+import com.example.junioroasisbackend.dtos.responses.LoginResponseDTO;
 import com.example.junioroasisbackend.entities.User;
 import com.example.junioroasisbackend.utils.JwtUtil;
-import com.example.junioroasisbackend.dtos.requests.AuthRequestDTO;
+import com.example.junioroasisbackend.dtos.requests.LoginRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import com.example.junioroasisbackend.repositories.UserRepository;
 @RestController()
 @RequestMapping(path = "/api/auth")
 @CrossOrigin("*")
-public class AuthController {
+public class LoginController {
     // config jwt for local storage
 
     private final AuthenticationManager authenticationManager;
@@ -33,13 +33,13 @@ public class AuthController {
 
     private final UserRepository userRepository;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public LoginController(AuthenticationManager authenticationManager, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
     }
 
     @PostMapping("login")
-    public ResponseEntity<Object> login(@RequestBody AuthRequestDTO authRequest) {
+    public ResponseEntity<Object> login(@RequestBody LoginRequestDTO authRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authRequest.getEmail(), authRequest.getPassword()));
@@ -49,7 +49,7 @@ public class AuthController {
                     .header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user.getEmail()))
                     .header("Access-Control-Expose-Headers", HttpHeaders.AUTHORIZATION) // to fix displaying jwt in local storage in angular
                     .body(
-                            new AuthResponseDTO(user)
+                            new LoginResponseDTO(user)
                     );
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("email or password was wrong");

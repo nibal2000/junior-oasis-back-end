@@ -1,10 +1,10 @@
 package com.example.junioroasisbackend.services.user;
 
-import com.example.junioroasisbackend.dtos.SignupDTO;
-import com.example.junioroasisbackend.dtos.UserDTO;
+import com.example.junioroasisbackend.dtos.requests.SignupRequestDTO;
+import com.example.junioroasisbackend.dtos.responses.users.UserResponseDTO;
 
 public interface UserService {
-    UserDTO createUser(SignupDTO signupDTO);
+    UserResponseDTO createUser(SignupRequestDTO signupDTO);
 
     boolean hasUserWithEmail(String email);
 }

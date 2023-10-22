@@ -1,10 +1,10 @@
 package com.example.junioroasisbackend.repositories;
 
-import com.example.junioroasisbackend.entities.Posts;
+import com.example.junioroasisbackend.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Posts, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
 }
