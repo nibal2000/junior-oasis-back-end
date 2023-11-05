@@ -2,16 +2,13 @@ package com.example.junioroasisbackend.dtos.requests;
 
 import lombok.Data;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Data
 public class CommentRequestDTO {
 
-    @NotNull
-    @Min(8)
-    @Max(1024)
+    @NotBlank
+    @Size(max = 1024, min= 8)
     private  String body;
 
     @NotNull

@@ -6,7 +6,7 @@ import com.example.junioroasisbackend.services.comments.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.validation.Valid;
 import java.util.Arrays;
 
 @RestController
@@ -21,7 +21,7 @@ public class CommentsController {
     }
 
     @PostMapping("comments")
-    public ResponseEntity<?> storeComment(@RequestBody CommentRequestDTO commentRequestDTO) {
+    public ResponseEntity<?> storeComment(@RequestBody @Valid CommentRequestDTO commentRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(commentService.addComment(commentRequestDTO));
     }
 
@@ -53,7 +53,7 @@ public class CommentsController {
     }
 
     @PatchMapping("comments/{commentId}")
-    public ResponseEntity<?> updateComment(@RequestBody CommentRequestDTO commentRequestDTO, @PathVariable Long commentId) {
+    public ResponseEntity<?> updateComment(@RequestBody @Valid CommentRequestDTO commentRequestDTO, @PathVariable Long commentId) {
         try {
             return ResponseEntity.ok( CommentResponseDTO.mapToCommentDto(commentService.updateComment(commentService.getCommentById(commentId), commentRequestDTO)));
         } catch (Exception e) {

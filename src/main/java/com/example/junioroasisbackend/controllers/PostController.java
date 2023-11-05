@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 
 @RestController
@@ -39,13 +40,13 @@ public class PostController {
         }
     }
     @PostMapping("posts")
-    public ResponseEntity<?> storePost(@RequestBody PostRequestDTO postDTO) {
+    public ResponseEntity<?> storePost(@RequestBody @Valid PostRequestDTO postDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.addPost(postDTO));
     }
 
 
     @PatchMapping ("posts/{postId}")
-    public ResponseEntity<?> updatePost(@RequestBody PostRequestDTO postDTO ,  @PathVariable Long postId) {
+    public ResponseEntity<?> updatePost(@RequestBody @Valid PostRequestDTO postDTO , @PathVariable Long postId) {
         try {
 
             return ResponseEntity.ok( PostShowDTO.mapToDto( postService.updatePost(postService.getPostById(postId), postDTO )));
