@@ -19,11 +19,9 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
 
-
     private final UserRepository userRepository;
 
     private final PostRepository postRepository;
-
 
 
     public PostServiceImpl(UserRepository userRepository, PostRepository postRepository) {
@@ -32,19 +30,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostShowDTO addPost(PostRequestDTO postDTO )  {
-
-        UserDetails userDetails = (UserDetails)   SecurityContextHolder.getContext().getAuthentication()
+    public PostShowDTO addPost(PostRequestDTO postDTO) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-
         Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
-        return optionalUser.map(user -> PostShowDTO.mapToDto(postRepository.save(this.assignPostRequestedToPost(postDTO ,  user)))).orElse(null);
+        return optionalUser.map(user -> PostShowDTO.mapToDto(postRepository.save(this.assignPostRequestedToPost(postDTO, user)))).orElse(null);
 
     }
 
     @Override
-    public Page<PostShowDTO> getAllPosts(Integer pageNumber , Integer perPage , String sortBy) {
-        Pageable paging = PageRequest.of(pageNumber, perPage , Sort.by(sortBy).descending());
+    public Page<PostShowDTO> getAllPosts(Integer pageNumber, Integer perPage, String sortBy) {
+        Pageable paging = PageRequest.of(pageNumber, perPage, Sort.by(sortBy).descending());
         Page<Post> page = postRepository.findAll(paging);
         return new PageImpl<>(Convertor.PostToPostShowDTO(page.getContent()), paging, page.getTotalElements());
     }
@@ -68,16 +64,16 @@ public class PostServiceImpl implements PostService {
         post.setTitle(postRequestDTO.getTitle());
         post.setBody(postRequestDTO.getBody());
         post.setTags(postRequestDTO.getTags());
-        return postRepository.save(post) ;
+        return postRepository.save(post);
     }
 
     @Override
-    public Post assignPostRequestedToPost(PostRequestDTO postStoreDTO , User user) {
+    public Post assignPostRequestedToPost(PostRequestDTO postStoreDTO, User user) {
         Post post = new Post();
         post.setTitle(postStoreDTO.getTitle());
         post.setBody(postStoreDTO.getBody());
         post.setTags(postStoreDTO.getTags());
         post.setUser(user);
-        return post ;
+        return post;
     }
 }

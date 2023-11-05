@@ -1,42 +1,37 @@
 package com.example.junioroasisbackend.entities;
 
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
-@Table(name = "posts")
-public class Post implements Serializable {
+@Table(name = "comments")
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String title;
-
-    @Lob
-    @Column(name= "body", length = 600)
+    @Lob // to store large binary or text data, such as images, documents, or long textual content
+    @Column(name = "body",  length = 512)
     private String body;
 
     @Column(name = "createdDate")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ElementCollection(targetClass = String.class)
-    private List<String> tags;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // one user can post many comments
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore // to exclude the User entity property from being serialized into JSON when the containing object is converted to JSON format.
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // one user can post many comments
+    @JoinColumn(name = "post_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Post post;
 
 }

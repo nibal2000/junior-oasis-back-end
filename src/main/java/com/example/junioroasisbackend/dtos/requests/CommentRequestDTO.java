@@ -1,26 +1,20 @@
 package com.example.junioroasisbackend.dtos.requests;
+
 import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.List;
 
 @Data
-public class PostRequestDTO {
-
-    @NotNull
-    @Min(3)
-    @Max(256)
-    private  String title ;
+public class CommentRequestDTO {
 
     @NotNull
     @Min(8)
     @Max(1024)
     private  String body;
 
-    @Size( max = 20)
-    private List<String> tags;
+    @NotNull
+    private Long postId;
 
 }
