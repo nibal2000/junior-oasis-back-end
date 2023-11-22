@@ -1,11 +1,14 @@
 package com.example.junioroasisbackend.dtos.requests;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.util.List;
 
 @Data
 public class PostRequestDTO {
+
+    private MultipartFile[] images;
 
     @NotBlank
     @Size(max = 1024, min= 8)

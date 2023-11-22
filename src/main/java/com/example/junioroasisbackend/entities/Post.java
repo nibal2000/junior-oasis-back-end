@@ -1,9 +1,13 @@
 package com.example.junioroasisbackend.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Where;
+import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.DbName;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,11 +15,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
 @Entity
 @Data
 @Table(name = "posts")
-public class Post implements Serializable {
+public class Post  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,5 +41,10 @@ public class Post implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore // to exclude the User entity property from being serialized into JSON when the containing object is converted to JSON format.
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "entity_id", referencedColumnName = "id") // Assuming the foreign key is based on the "id" field
+    @Where(clause = " entity_type = 'POST' ")
+    private List<Media> media;
 
 }

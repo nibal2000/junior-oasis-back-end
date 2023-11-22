@@ -37,6 +37,9 @@ public class CommentServiceImpl implements CommentService{
         return optionalUser.map(user -> CommentResponseDTO.mapToCommentDto(commentRepository.save(this.assignCommentRequestedToComment(commentRequestDTO, user)))).orElse(null);
     }
 
+
+
+
     @Override
     public Comment assignCommentRequestedToComment(CommentRequestDTO commentStoreDTO, User user) {
         Comment comment = new Comment();
@@ -74,5 +77,14 @@ public class CommentServiceImpl implements CommentService{
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
         comment.setPost(post);
         return commentRepository.save(comment);
+    }
+
+    @Override
+    public Page<CommentResponseDTO> getAllCommentsByPost(Long postId, Integer pageNumber, Integer perPage, String sortBy) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        Pageable paging = PageRequest.of(pageNumber, perPage, Sort.by(sortBy).descending());
+        Page<Comment> page = commentRepository.findAllByPost(post , paging);
+        return new PageImpl<>(Convertor.CommentToCommentResponseDto(page.getContent()), paging, page.getTotalElements());
     }
 }

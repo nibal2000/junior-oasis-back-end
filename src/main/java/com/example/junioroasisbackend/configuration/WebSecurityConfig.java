@@ -1,8 +1,10 @@
 package com.example.junioroasisbackend.configuration;
 
 import com.example.junioroasisbackend.filter.JwtRequestFilter;
+import com.example.junioroasisbackend.utils.converters.MediableEnumConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -36,13 +38,13 @@ public class WebSecurityConfig  implements WebMvcConfigurer {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/auth/*")
+                .antMatchers("/api/auth/*" , "/api/media/*")
                 .permitAll()
                 .and()
                 .cors()
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/api/**")
+                .antMatchers("/api/**" )
                 .authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -68,6 +70,12 @@ public class WebSecurityConfig  implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").exposedHeaders("Authorization");
 
+    }
+
+
+
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new MediableEnumConverter());
     }
 
 }

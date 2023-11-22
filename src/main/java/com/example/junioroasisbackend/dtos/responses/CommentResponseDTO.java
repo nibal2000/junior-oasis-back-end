@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Data
 public class CommentResponseDTO implements Serializable {
@@ -21,6 +23,8 @@ public class CommentResponseDTO implements Serializable {
     private OwnerResponseDTO Owner;
 
 
+    private MediaResponseDTO image;
+
 
     public static CommentResponseDTO mapToCommentDto(Comment comment){
         CommentResponseDTO commentResponseDTO = new CommentResponseDTO();
@@ -29,6 +33,10 @@ public class CommentResponseDTO implements Serializable {
         commentResponseDTO.setBody(comment.getBody());
         commentResponseDTO.setCreatedAt(comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         commentResponseDTO.setPostId(comment.getPost().getId());// to see if i have to use postShowDto or let it like that
+        if(comment.getMedia() != null &&  !comment.getMedia().isEmpty()){
+            commentResponseDTO.setImage(MediaResponseDTO.mapToDTO(comment.getMedia().get(0) ));
+        }
+
         return commentResponseDTO;
     }
 }
