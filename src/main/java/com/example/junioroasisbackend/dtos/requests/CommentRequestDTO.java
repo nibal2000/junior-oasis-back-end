@@ -12,7 +12,7 @@ public class CommentRequestDTO {
     private MultipartFile image;
 
     @NotBlank
-    @Size(max = 1024, min= 8)
+    @Size(max = 512, min= 1)
     private  String body;
 
     @NotNull

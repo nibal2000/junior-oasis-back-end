@@ -10,15 +10,12 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -57,11 +54,11 @@ public class ImageController {
 
         if (mediaOptional.isPresent()){
             String fileName = mediaOptional.get().getEntityType() + "-" + mediaOptional.get().getEntityID() + "-" + mediaOptional.get().getOriginalName();
-
-            if (mediaOptional.get().getContentType() != null) {
+            File f = new File(MediaServiceImp.UPLOAD_DIRECTORY + "/" + fileName);
+            if (mediaOptional.get().getContentType() != null && f.exists()) {
                 return ResponseEntity.ok()
                         .contentType(MediaType.valueOf(mediaOptional.get().getContentType()))
-                        .body(new InputStreamResource(new FileInputStream(new File(MediaServiceImp.UPLOAD_DIRECTORY + "/" + fileName))));
+                        .body(new InputStreamResource(new FileInputStream(f)));
             }else {
                 mediaRepository.deleteById(mediaID);
             }

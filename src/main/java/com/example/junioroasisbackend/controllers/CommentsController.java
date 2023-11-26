@@ -5,12 +5,15 @@ import com.example.junioroasisbackend.dtos.responses.CommentResponseDTO;
 import com.example.junioroasisbackend.dtos.responses.MediaResponseDTO;
 import com.example.junioroasisbackend.entities.Comment;
 import com.example.junioroasisbackend.services.comments.CommentService;
+import com.example.junioroasisbackend.services.comments.dependantServices.CommentVoteService;
 import com.example.junioroasisbackend.services.media.MediaService;
 import com.example.junioroasisbackend.utils.enums.Mediable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +24,7 @@ import java.util.Arrays;
 @CrossOrigin("*")
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Transactional()
 public class CommentsController {
 
     private final MediaService mediaService;
@@ -28,7 +32,7 @@ public class CommentsController {
 
     private final CommentService commentService;
 
-
+    private  final CommentVoteService commentVoteService;
 
 
     @PostMapping(value = "comments")
@@ -89,6 +93,28 @@ public class CommentsController {
                 mediaService.storeSingltonMedia( commentRequestDTO.getImage()  , comment.getId(),  Mediable.COMMENT);
             }
             return ResponseEntity.ok( CommentResponseDTO.mapToCommentDto(commentService.updateComment(comment, commentRequestDTO)));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping("comments/{commentId}/vote")
+    public ResponseEntity<?> voteOnComment( @PathVariable Long commentId) {
+        try {
+            this.commentVoteService.voteOnComment(commentId);
+
+            return ResponseEntity.ok(CommentResponseDTO.mapToCommentDto(commentService.getCommentById(commentId)));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("comments/{commentId}/unvote")
+    public ResponseEntity<?> unVoteOnComment( @PathVariable Long commentId) {
+        try {
+            this.commentVoteService.unVoteOnComment(commentId);
+            return ResponseEntity.ok(CommentResponseDTO.mapToCommentDto(commentService.getCommentById(commentId)));
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

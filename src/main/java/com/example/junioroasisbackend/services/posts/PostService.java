@@ -12,7 +12,7 @@ public interface PostService {
     Page<PostResponseDTO> getAllPosts(Integer pageNumber , Integer perPage , String sortBy);
 
     Post getPostById(Long postId) throws Exception;
-    void deletePostById(Long postId);
+    boolean deletePostById(Long postId) throws Exception;
 
     Post updatePost(Post post , PostRequestDTO postRequestDTO );
 

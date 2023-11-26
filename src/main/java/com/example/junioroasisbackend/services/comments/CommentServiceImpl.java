@@ -7,34 +7,29 @@ import com.example.junioroasisbackend.entities.Post;
 import com.example.junioroasisbackend.entities.User;
 import com.example.junioroasisbackend.repositories.CommentRepository;
 import com.example.junioroasisbackend.repositories.PostRepository;
-import com.example.junioroasisbackend.repositories.UserRepository;
+import com.example.junioroasisbackend.services.user.UserService;
 import com.example.junioroasisbackend.utils.Convertor;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserService userService) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
     public CommentResponseDTO addComment(CommentRequestDTO commentRequestDTO) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
-        return optionalUser.map(user -> CommentResponseDTO.mapToCommentDto(commentRepository.save(this.assignCommentRequestedToComment(commentRequestDTO, user)))).orElse(null);
+        return  CommentResponseDTO.mapToCommentDto(commentRepository.save(this.assignCommentRequestedToComment(commentRequestDTO, this.userService.getCurrentUser())));
     }
 
 
@@ -66,8 +61,14 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void deleteCommentById(Long commentId) {
-        commentRepository.deleteById(commentId);
+    public boolean deleteCommentById(Long commentId) throws Exception {
+        Comment comment = this.getCommentById(commentId);
+        User user = this.userService.getCurrentUser();
+        if (user.getId() == comment.getUser().getId()) {
+            commentRepository.deleteById(commentId);
+            return true ;
+        }
+        return false ;
     }
 
     @Override
@@ -87,4 +88,5 @@ public class CommentServiceImpl implements CommentService{
         Page<Comment> page = commentRepository.findAllByPost(post , paging);
         return new PageImpl<>(Convertor.CommentToCommentResponseDto(page.getContent()), paging, page.getTotalElements());
     }
+
 }

@@ -12,11 +12,13 @@ import lombok.ToString;
 @ToString
 public class LoginResponseDTO {
 
+    private  Long id ;
     private String name;
 
     private String email;
 
     public LoginResponseDTO(User user){
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
     }

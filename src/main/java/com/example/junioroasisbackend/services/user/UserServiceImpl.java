@@ -3,9 +3,13 @@ package com.example.junioroasisbackend.services.user;
 import com.example.junioroasisbackend.dtos.requests.SignupRequestDTO;
 import com.example.junioroasisbackend.dtos.responses.users.UserResponseDTO;
 import com.example.junioroasisbackend.entities.User;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.junioroasisbackend.repositories.UserRepository;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -16,7 +20,7 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
     }
 
-//ToDo Mapping
+
     @Override
     public UserResponseDTO createUser(SignupRequestDTO signupDTO) {
         User user = new User();
@@ -34,6 +38,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean hasUserWithEmail(String username) {
         return userRepository.findFirstByEmail(username).isPresent();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
+        return  optionalUser.orElseThrow();
     }
 
 }

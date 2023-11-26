@@ -89,9 +89,9 @@ public class MediaServiceImp  implements  MediaService{
         Collection<Media> allMedia = mediaRepository.findByTypeAndID(entityType.toString() , entityID);
 
         allMedia.forEach((media)-> {
-                (new File(UPLOAD_DIRECTORY + "/" + entityType.toString() + "-" + entityID + "-" + media.getOriginalName())).delete();
+                (new File(UPLOAD_DIRECTORY + "/" + entityType.toString() + "-" + entityID + "-" + media.getOriginalName())).deleteOnExit();
         } );
-        mediaRepository.deleteAll(allMedia);
+         mediaRepository.deleteByTypeAndID(entityType.toString() , entityID);
 
     }
 
