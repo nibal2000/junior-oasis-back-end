@@ -21,12 +21,13 @@ public class UserServiceImpl implements UserService{
     }
 
 
+    //TODO no need to instantiate a new BCryptPasswordEncoder each time. Insteade declare une methode et l'injecter ici
     @Override
     public UserResponseDTO createUser(SignupRequestDTO signupDTO) {
         User user = new User();
         user.setEmail(signupDTO.getEmail());
         user.setName(signupDTO.getName());
-        user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));//TODO
         User createdUser = userRepository.save(user);
         UserResponseDTO createdUserDto = new UserResponseDTO();
         createdUserDto.setId(createdUser.getId());

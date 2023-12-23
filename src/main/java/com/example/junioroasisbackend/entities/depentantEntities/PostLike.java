@@ -21,13 +21,12 @@ public class PostLike {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    // to exclude the User entity property from being serialized into JSON when the containing object is converted to JSON format.
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "post_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore // to exclude the User entity property from being serialized into JSON when the containing object is converted to JSON format.
+    @JsonIgnore
     private Post post;
 
 

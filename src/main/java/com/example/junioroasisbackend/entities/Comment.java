@@ -32,13 +32,13 @@ public class Comment  {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false) // one user can post many comments
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "post_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "entity_id", referencedColumnName = "id") // Assuming the foreign key is based on the "id" field
+    @JoinColumn(name = "entity_id", referencedColumnName = "id")
     @Where(clause = " entity_type = 'COMMENT' ")
     private List<Media> media;
 

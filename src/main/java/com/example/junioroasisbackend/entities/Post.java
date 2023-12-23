@@ -41,12 +41,12 @@ public class Post  implements Serializable {
     private User user;
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "entity_id", referencedColumnName = "id") // Assuming the foreign key is based on the "id" field
+    @JoinColumn(name = "entity_id", referencedColumnName = "id")
     @Where(clause = " entity_type = 'POST' ")
     private List<Media> media;
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "post_id", referencedColumnName = "id") // Assuming the foreign key is based on the "id" field
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private List<PostLike> likes;
 
 /*    @ManyToMany()
