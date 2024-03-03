@@ -35,6 +35,16 @@ public class CommentsController {
     private  final CommentVoteService commentVoteService;
 
 
+    /**
+     * Store a comment in the system.
+     *   We use the mediaService.storeMedia() method to store the image,passing in the image, comment ID, and the media type which reperesnt (media object)
+     *   Then, We map the media object to a MediaResponseDTO using the static method MediaResponseDTO.mapToDTO()
+     *   Then, We set the mapped MediaResponseDTO as the image in commentDTO using commentDTO.setImage
+     *
+     * @param  commentRequestDTO  the comment request DTO object containing the comment details
+     * @return                    the response entity containing the created comment
+     * @throws Exception          if an error occurs while storing the comment
+     */
     @PostMapping(value = "comments")
     public ResponseEntity<?> storeComment(@ModelAttribute @Valid CommentRequestDTO commentRequestDTO ) throws Exception {
 

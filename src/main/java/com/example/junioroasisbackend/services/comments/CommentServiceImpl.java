@@ -73,9 +73,12 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public Comment updateComment(Comment comment, CommentRequestDTO commentRequestDTO) {
+        //  Update the body of the existing comment with the new value from commentRequestDTO
         comment.setBody(commentRequestDTO.getBody());
+        // Retrieve the Post from the repository using the postId from commentRequestDTO
         Post post = postRepository.findById(commentRequestDTO.getPostId())
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        // Set the retrieved Post as the new Post for the comment
         comment.setPost(post);
         return commentRepository.save(comment);
     }
